@@ -1,0 +1,46 @@
+body {
+    background-color: #fcfcfc;
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+}
+
+/* header */
+.ui.fixed {
+	background-color: #eeeeee;
+}
+
+.ui.menu .item img.logo {
+	margin-right: 1em;
+}
+
+.header.item {
+  font-size: 1.1em;
+  color: #607d8b;
+}
+
+/* main */
+main {
+  flex: 1;
+  margin-top: 5em;
+}
+
+.display-none {
+  display: none;
+}
+
+
+/* footer */
+.ui.footer.segment {
+	margin: 1em 0em 0em 0em;
+	padding: 2em 0em;
+	background-color: #eeeeee;
+  border-top: 1px solid #dddddd;
+}
+
+.copyright {
+  color: #1f1f1f;
+  font-weight: bold;
+  font-size: 1em;
+  margin-top: 1em;
+}
