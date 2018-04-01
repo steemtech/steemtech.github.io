@@ -182,7 +182,7 @@ function setVotingPower(vp, lastTime) {
 
 // https://steemit.com/steemit/@digitalnotvir/how-reputation-scores-are-calculated-the-details-explained-with-simple-math
 function calcReputation(rep) {
-    var ret = Math.log10(rep);
+    var ret = Math.log(rep)/Math.log(10); // same as 'Math.log10(rep) [I.E. doesn't support Math.log10]
     if (isNaN(ret)) {
         ret = 0;
     }
