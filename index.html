@@ -2,6 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 	<title>Steemtech</title>
 
 	<link rel="icon" href="images/favicon.ico">
@@ -19,9 +20,7 @@
 	     $.getScript("js/steemtech.js", function() {
 	        $("#site_header").load("header.html");
 	        $("#site_footer").load("footer.html");
-
 	     });
-
 	}); 
 	</script>
 </head>
@@ -35,36 +34,38 @@
       <div class="ui huge text loader">Please wait...</div>
     </div>
 
-	<!-- [ user input container -->
-	<div class="ui container" style="padding-top: 1em;">
-	  <div id="form_main" class="ui form">
-	  <div class="ui grey segment">
-	  	<div class="ui left icon action input">
-	  	  <i class="user icon"></i>
-	  	  <input id="input_username" placeholder="Username" type="text">
-	  	  <div id="btn_search" class="ui blue submit button">Search</div>
-	  	</div>
-	  </div>
-	  </div>
+  	<!-- [ user input container -->
+    <div class="ui stackable container">
 
-	  <!-- Warning message -->
-	  <div id="message_warning" class="ui negative message display-none">
-	  	<div id="message_warning_header" class="header">
-	  	</div>
-	  	<p>Please retry in a few minutes.</p>
-	  </div>
+      <div class="ui grey segment column">
+        <div id="form_main" class="ui form">
+            <div class="ui left icon action input" style="width:220px;">
+              <i class="user icon" style="background-color: #cccccc;"></i>
+              <input id="input_username" placeholder="Username" type="text">
+              <div id="btn_search" class="ui blue submit button">Search</div>
+            </div>
+        </div>
+      </div>
+    </div>
+    <!-- user input container ] -->
 
-	</div>
-	<!-- user input container ] -->
+    <!-- Warning message container-->
+    <div class="ui one column stackable container">
+      <div class="column">
+        <div id="message_warning" class="ui negative message display-none">
+          <div id="message_warning_header" class="header">
+          </div>
+          <p>Please retry in a few minutes.</p>
+        </div>
+      </div>
+    </div>
 
-    <div id="container_profile" class="ui grid doubling stackable container" style="padding-top: 2em;">
+    <div id="container_profile" class="ui grid doubling stackable container" style="padding-top: 1em;">
     	<div id="container_profile" class="four wide column">
     		<div id="profile_name" class="ui top attached header inverted segment" style="border:1px solid #00d6a5;background-color:#00d6a5;">
     		    -
     		</div>
     		<div class="ui attached stacked bottom segment">
-
-
     			<div class="ui grid doubling container" style="padding-top: 1em;">
     				<div class="eight wide column" style="padding:2px;">
     					<center><img id="profile_img" class="ui rounded image" src="https://semantic-ui.com/images/avatar2/large/matthew.png"></center>
@@ -114,22 +115,7 @@
     						</div>
     					</div>
     				</div>
-
-
-    		    </div>
-
-
-    		    <!-- <div class="ui small card" style="margin:auto;">
-    		        <div class="image">
-    		             <img src="https://semantic-ui.com/images/avatar2/large/kristy.png" style="width:100px;">
-    		        </div>
-    		        <div class="content">
-    		        sd
-    		        </div>
-    		    </div>	
- -->
-
-
+    		  </div>
     		</div>
     	</div>
     	<div id="container_selfvote" class="six wide column">
@@ -169,7 +155,6 @@
 			</div>
     	</div>
     </div>
-</div>
 
 </main>
 
