@@ -1,164 +1,202 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-	<title>Steemtech</title>
+    <title>Steemtech</title>
 
-	<link rel="icon" href="images/favicon.ico">
-	<link rel="stylesheet" type="text/css" href="semantic-ui/semantic.min.css">
-	<link rel="stylesheet" type="text/css" href="css/billboard.min.css">
-	<link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="icon" href="images/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="semantic-ui/semantic.min.css">
+    <link rel="stylesheet" type="text/css" href="css/billboard.min.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
 
-	<script src="js/jquery-3.2.1.min.js"></script>
-	<script src="https://d3js.org/d3.v4.min.js"></script>
-	<script src="js/billboard.min.js"></script>
-	<script src="semantic-ui/semantic.min.js"></script>
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="js/billboard.min.js"></script>
+    <script src="semantic-ui/semantic.min.js"></script>
+    <script src="js/steem.min.js"></script>
 
-	<script>
-	$(document).ready(function() {
-	     $.getScript("js/steemtech.js", function() {
-	        $("#site_header").load("header.html");
-	        $("#site_footer").load("footer.html");
-	     });
-	}); 
-	</script>
+    <script>
+        $(document).ready(function() {
+            $.getScript("js/steemtech.js", function() {
+                $("#site_header").load("header.html");
+                $("#site_footer").load("footer.html");
+            });
+        });
+    </script>
 </head>
+
 <body>
 
-<div id="site_header"></div>
+    <div id="site_header"></div>
 
-<main>
-	<!-- Dimmer -->
-    <div id="wrap_loader" class="ui inverted dimmer">
-      <div class="ui huge text loader">Please wait...</div>
-    </div>
+    <main>
+        <!-- Dimmer -->
+        <div id="wrap_loader" class="ui inverted dimmer">
+            <div class="ui huge text loader">Please wait...</div>
+        </div>
 
-  	<!-- [ user input container -->
-    <div class="ui stackable container">
-
-      <div class="ui grey segment column">
-        <div id="form_main" class="ui form">
-            <div class="ui left icon action input" style="width:220px;">
-              <i class="user icon" style="background-color: #cccccc;"></i>
-              <input id="input_username" placeholder="Username" type="text">
-              <div id="btn_search" class="ui blue submit button">Search</div>
+        <!-- Warning message container-->
+        <div class="ui one column stackable container" style="padding-bottom:1em;">
+            <div class="column">
+                <div id="message_warning" class="ui negative message display-none">
+                    <div id="message_warning_header" class="header">
+                    </div>
+                    <p>Please retry in a few minutes.</p>
+                </div>
             </div>
         </div>
-      </div>
-    </div>
-    <!-- user input container ] -->
 
-    <!-- Warning message container-->
-    <div class="ui one column stackable container">
-      <div class="column">
-        <div id="message_warning" class="ui negative message display-none">
-          <div id="message_warning_header" class="header">
-          </div>
-          <p>Please retry in a few minutes.</p>
+
+        <!-- [ user input container -->
+        <div class="ui stackable container">
+            <div class="ui grey segment column">
+                <div id="form_main" class="ui form">
+                    <div class="ui left icon action input" style="width:220px;">
+                        <i class="at icon" style="background-color: #dddddd;"></i>
+                        <input id="input_username" placeholder="Username" type="text">
+                        <div id="btn_search" class="ui blue submit button">Search</div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
+        <!-- user input container ] -->
 
-    <div id="container_profile" class="ui grid doubling stackable container" style="padding-top: 1em;">
-    	<div id="container_profile" class="four wide column">
-    		<div id="profile_name" class="ui top attached header inverted segment" style="border:1px solid #00d6a5;background-color:#00d6a5;">
-    		    -
-    		</div>
-    		<div class="ui attached stacked bottom segment">
-    			<div class="ui grid doubling container" style="padding-top: 1em;">
-    				<div class="eight wide column" style="padding:2px;">
-    					<center><img id="profile_img" class="ui rounded image" src="https://semantic-ui.com/images/avatar2/large/matthew.png"></center>
-    				</div>
-    				<div id="profile_profiles" class="eight wide column" style="padding:4px;">
-    				    -
-    				</div>
+        <div id="container_profile" class="ui grid doubling stackable container" style="padding: 1em 0em 0em 0em;">
+            <div id="container_profile" class="four wide column">
+                <div id="profile_name" class="ui top attached header inverted segment" style="border:1px solid #00d6a5;background-color:#00d6a5;">
+                    -
+                </div>
+                <div id="segment_profile" class="ui attached stacked bottom segment">
+                    <div class="ui grid doubling stackable container" style="padding: 0.5em 0em 0em 0em;">
+                        <div class="eight wide column" style="padding:0;">
+                            <img id="profile_img" class="ui rounded image" src="https://semantic-ui.com/images/avatar2/large/matthew.png" width="100%">
+                        </div>
+                        <div id="profile_profiles" class="eight wide column" style="padding-left:4px;">
+                            -
+                        </div>
 
-    				<div class="sixteen wide column" style="padding:0.3em;">
-    					<div id="progress_voting_power" class="ui orange standard progress">
-						  <div class="bar">
-						    <div class="progress"></div>
-						    </div>
-						  <div class="tiny label">Voting Power</div>
-						</div>
-    				</div>
+                        <div class="sixteen wide column" style="padding:0.3em 0 0 0;">
+                            <div id="progress_voting_power" class="ui orange standard progress">
+                                <div class="bar">
+                                    <div class="progress"></div>
+                                </div>
+                                <div class="tiny label">Voting Power</div>
+                            </div>
+                        </div>
 
-    				<div class="eight wide column center aligned">
-    					<div class="ui mini blue statistic">
-                            <div class="value">
-    						    TBD
-    						</div>
-    						<div class="label">
-    						    SP
-    						</div>
-    					</div>
-    				</div>
+                        <div class="eight wide column center aligned">
+                            <div class="ui mini blue statistic">
+                                <div id="value_sp" class="value">
+                                    0
+                                </div>
+                                <div class="label">
+                                    SP (ALL)
+                                </div>
+                            </div>
+                        </div>
 
-    				<div class="eight wide column center aligned">
-    					<div class="ui mini blue statistic">
-                            <div id="value_mvest" class="value">
-    						    0
-    						</div>
-    						<div class="label">
-    						    MVest
-    						</div>
-    					</div>
-    				</div>
+                        <div class="eight wide column center aligned">
+                            <div class="ui mini blue statistic">
+                                <div id="value_mvest" class="value">
+                                    0
+                                </div>
+                                <div class="label">
+                                    MVest
+                                </div>
+                            </div>
+                        </div>
 
-    				<div class="sixteen wide column center aligned" style="padding-bottom: 2.7em;">
-    					<div class="ui horizontal mini blue statistic">
-                            <div class="value">
-    						    TBD
-    						</div>
-    						<div class="label">
-    						    $ / FULL VOTE
-    						</div>
-    					</div>
-    				</div>
-    		  </div>
-    		</div>
-    	</div>
-    	<div id="container_selfvote" class="six wide column">
-    		<div class="ui top attached header teal segment">
-    			<p class="ui small header">Selfvote &amp; Vote per Day<!-- <i id="question_selfvote" class="question circle icon grey small-icon" style="font-size: 1em;" data-content="" data-position="top left" data-variation="small"></i> -->
-    			</p>
-    		</div>
-    		<div id="chart_area_selfvote" class="ui bottom attached stacked segment">
-    	    </div>
-    	</div>
+                        <div class="eight wide column center aligned">
+                            <div class="ui mini blue statistic">
+                                <div id="value_received" class="value">
+                                    0
+                                </div>
+                                <div class="label">
+                                    RECEIVED<br>SP
+                                </div>
+                            </div>
+                        </div>
 
-    	<div id="container_inverse_simpson" class="six wide column">
-    		<div class="ui top attached header teal segment">
-    			<p class="ui small header">Vote Diversity (Inverse Simpson) <i id="question_inverse_simpson" class="question circle icon grey small-icon" style="font-size: 1em;" data-content="This indicator represent variety of people that this user was voted for." data-position="top left" data-variation="small"></i>
-    			</p>
-    		</div>
-    		<div id="chart_area_inverse_simpson" class="ui bottom attached stacked segment">
-    	    </div>
-    	</div>
-    </div>
+                        <div class="eight wide column center aligned">
+                            <div class="ui mini blue statistic">
+                                <div id="value_delegated" class="value">
+                                    0
+                                </div>
+                                <div class="label">
+                                    DELEGATED<br>SP
+                                </div>
+                            </div>
+                        </div>
 
-    <div id="container_rshares" class="ui one column container" style="padding-top: 2em;">
-    	<div class="column">
-    	   	<div class="ui top attached header olive segment">
-    			<p class="ui small header">Author that User voted (RShares value in last 90 days)<!-- <i id="question_votee" class="question circle icon grey small-icon" style="font-size: 1em;" data-content="" data-position="top left" data-variation="small"></i> -->
-    			</p>
-    		</div>
-    		<div class="ui bottom attached stacked segment">
-    		    <div class="ui two column doubling stackable grid container">
-        			<div class="column" style="padding-left:90px">
-        			    <div id="chart_area_votee_donut">
-        			    </div>
-        			</div>
-    			    <div id="chart_area_votee_rshares" class="column">
-    			    </div>
-    		    </div>
-			</div>
-    	</div>
-    </div>
+                        <div class="sixteen wide column center aligned" style="padding: 0em 0em 2.7em 0em;">
+                            <div class="ui horizontal mini blue statistic">
+                                <div class="value">
+                                    TBD
+                                </div>
+                                <div class="label">
+                                    $ / FULL VOTE
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="container_selfvote" class="six wide column">
+                <div class="ui top attached header teal segment">
+                    <p class="ui small header">Selfvote &amp; Vote per Day
+                        <!-- <i id="question_selfvote" class="question circle icon grey small-icon" style="font-size: 1em;" data-content="" data-position="top left" data-variation="small"></i> -->
+                    </p>
+                </div>
+                <center>
+                    <div id="chart_area_selfvote" class="ui bottom attached stacked segment">
+                    </div>
+                </center>
+            </div>
 
-</main>
+            <div id="container_inverse_simpson" class="six wide column">
+                <div class="ui top attached header teal segment">
+                    <p class="ui small header">Vote Diversity (Inverse Simpson) <i id="question_inverse_simpson" class="question circle icon grey small-icon" style="font-size: 1em;" data-content="This indicator represent variety of people that this user was voted for." data-position="top left" data-variation="small"></i>
+                    </p>
+                </div>
+                <center>
+                    <div id="chart_area_inverse_simpson" class="ui bottom attached stacked segment">
+                    </div>
+                </center>
+            </div>
+        </div>
 
-<div id="site_footer"></div>
+        <div id="container_rshares" class="ui one column container" style="padding-top: 2em;">
+            <div class="column">
+                <div class="ui top attached header olive segment">
+                    <p class="ui small header">Author that User voted (RShares value in last 90 days)
+                        <!-- <i id="question_votee" class="question circle icon grey small-icon" style="font-size: 1em;" data-content="" data-position="top left" data-variation="small"></i> -->
+                    </p>
+                </div>
+                <div class="ui bottom attached stacked segment" style="padding:0px;">
+                    <div class="ui two column stackable grid container">
+                        <div class="column">
+                            <center>
+                                <div id="chart_area_votee_donut">
+                                </div>
+                            </center>
+                        </div>
+                        <div class="column">
+                            <center>
+                                <div id="chart_area_votee_rshares">
+                                </div>
+                            </center>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <div id="site_footer"></div>
 
 </body>
+
 </html>
