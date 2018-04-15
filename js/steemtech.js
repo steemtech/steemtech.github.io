@@ -37,22 +37,24 @@
  var $sDataForChartVoteeRShares = [];
  var $sDataForChartVoteeRSharesVotees = [];
 
- //20180407 - 20:53
+ var $sSBDPerVote = '';
+
+ //20180415 - 19:58
  var $sDataForSteemPower = {
-     "steem_to_sbd": 1.713,
-     "sbd_to_steem": 0.5837711617046117,
-     "sbd_median_price": 1.713,
-     "steem_per_mvests": 490.43375207009865,
-     "vests_to_sp": 0.0004904319751637225,
-     "sp_to_vests": 2039.011376723248,
-     "ticker": {
-         "latest": "0.92536506219578152",
-         "lowest_ask": "0.92542700284668555",
-         "highest_bid": "0.92131474103585664",
-         "percent_change": "-2.52821344871101994",
-         "steem_volume": "4114.718 STEEM",
-         "sbd_volume": "3782.204 SBD"
-     }
+    "steem_to_sbd": 2.632,
+    "sbd_to_steem": 0.37993920972644374,
+    "sbd_median_price": 2.632,
+    "steem_per_mvests": 490.6390793396781,
+    "vests_to_sp": 0.00049063822103829,
+    "sp_to_vests": 2038.1580720105717,
+    "ticker": {
+        "latest": "1.08920187793427248",
+        "lowest_ask": "1.08770718232044206",
+        "highest_bid": "1.08208049304323461",
+        "percent_change": "-1.93009911319770300",
+        "steem_volume": "4680.935 STEEM",
+        "sbd_volume": "5124.413 SBD"
+    }
  };
 
  var $totalVotees = 0;
@@ -88,6 +90,7 @@
 
      $sToday = new Date();
 
+     $sSBDPerVote = $("#sbd_per_vote")
      // $sBrowserWidth = getBrowserWidth();
 
      if (isMobileOrTablet()) {
@@ -130,7 +133,6 @@
              }
          }
      }
-
  }
 
  function refreshPage() {
@@ -293,16 +295,23 @@
      var $delegated_vest = result.delegated_vesting_shares.split(' ')[0];
      var $sum_vest = parseFloat($vest) + parseFloat($received_vest) - parseFloat($delegated_vest);
      var $mvest = ($sum_vest / 1000000).toFixed(2);
+     var $currentSP = parseInt(getSteemPower($sum_vest));
 
      $("#profile_name").text($profileName);
      $("#profile_img").attr('src', $imgSrc);
      $("#profile_profiles").html($profiles);
      $("#value_mvest").text(parseInt($mvest).format());
-     $("#value_sp").text(parseInt(getSteemPower($sum_vest)).format());
+     $("#value_sp").text($currentSP.format());
      $("#value_delegated").text(parseInt(getSteemPower($delegated_vest)).format());
      $("#value_received").text(parseInt(getSteemPower($received_vest)).format());
 
-     setVotingPower(result.voting_power, result.last_vote_time);
+     var $currentVp = getVotingPower(result.voting_power, result.last_vote_time);
+
+     $("#progress_voting_power").progress({
+         percent: $currentVp
+     });
+
+     setFullVoteSBD($currentSP);
  }
 
  // https://steemit.com/steemit/@hmushtaq/how-to-calculate-steem-power-from-vests
@@ -313,13 +322,46 @@
      return $mySP; // == 0 ? 15 : $mySP;
  }
 
-// https://steemit.com/bisteemit/@paulag/how-to-calculate-the-worth-of-any-steemit-vote-steemit-business-intelligence
- function getFullVoteSBD() {
+ // https://steemit.com/bisteemit/@paulag/how-to-calculate-the-worth-of-any-steemit-vote-steemit-business-intelligence
+ // https://steemnow.com/upvotecalc.html
+ function setFullVoteSBD(sp) {
 
+    var curSP = sp;
+
+    function e() {
+
+        var e = curSP,
+            t = 100,
+            n = 100,
+            r = e / a,
+            m = parseInt(100 * t * (100 * n) / p);
+        m = parseInt((m + 49) / 50);
+        var l = parseInt(r * m * 100) * i * o;
+        $("#sbd_per_vote").text(l.toFixed(2)), $("#sbd_per_vote").hide().fadeIn("fast")
+    }
+
+    function t() {
+        steem.api.getRewardFund("post", function(e, t) {
+            n = t.reward_balance, r = t.recent_claims, i = n.replace(" STEEM", "") / r
+        }), steem.api.getCurrentMedianHistoryPrice(function(e, t) {
+            o = t.base.replace(" SBD", "") / t.quote.replace(" STEEM", "")
+        }), setTimeout(t, 1e4)
+    }
+    var a, n, r, i, o, p = 1e4;
+    steem.api.setOptions({
+        url: "https://api.steemit.com"
+    }), t();
+    var m = setInterval(function() {
+        void 0 !== o && (clearInterval(m), steem.api.getDynamicGlobalProperties(function(t, n) {
+            a = n.total_vesting_fund_steem.replace(" STEEM", "") / n.total_vesting_shares.replace(" VESTS", ""), e()
+        }))
+    }, 200);
+
+    e();
  }
 
  // https://steemit.com/kr-dev/@maanya/steem-python
- function setVotingPower(vp, lastTime) {
+ function getVotingPower(vp, lastTime) {
      var $lastTimeMillis = new Date(lastTime).getTime();
      var $timeZoneMillis = (new Date().getTimezoneOffset()) * 60 * 1000;
      var $nowTimeMillis = new Date().getTime();
@@ -333,9 +375,7 @@
          $finalVP = 100;
      }
 
-     $("#progress_voting_power").progress({
-         percent: $finalVP
-     });
+     return $finalVP;
  }
 
  // https://steemit.com/steemit/@digitalnotvir/how-reputation-scores-are-calculated-the-details-explained-with-simple-math
