@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>짱짱맨 리포트</title>
+
+    <link rel="icon" href="images/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="semantic-ui/semantic.min.css">
+    <link rel="stylesheet" type="text/css" href="css/billboard.min.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="js/billboard.min.js"></script>
+    <script src="semantic-ui/semantic.min.js"></script>
+    <script src="js/steem.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $.getScript("js/steemtech_jjreport.js", function() {});
+        });
+    </script>
+</head>
+
+<body>
+    <!-- Dimmer -->
+    <div id="wrap_loader" class="ui inverted dimmer">
+        <div class="ui huge text loader">잠시만 기다려 주세요.</div>
+    </div>
+    <main>
+
+        <!-- Warning message container-->
+        <div class="ui stackable container" style="padding-bottom:1em;">
+            <div class="column">
+                <div id="message_warning" class="ui negative message display-none">
+                    <div id="message_warning_header" class="header">
+                    </div>
+                    <p>잠시 후에 새로고침(F5) 해주세요.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="ui stackable container">
+            <div class="ui inverted segment column page_title">
+                #JJANGJJANGMAN Report
+            </div>
+        </div>
+
+        <div id="container_tag_table" class="ui container" style="padding-top: 2em;">
+            <div class="column">
+                <div class="ui top attached header grey segment">
+                    <p class="ui small header">#JJANGJJANGMAN 태그 사용 정보 (최근 100개의 글)</p>
+                </div>
+                <div class="ui bottom attached stacked segment" style="padding:0px;">
+                    <div class="column">
+
+                        <table id="tag_users_table" class="ui celled striped table" style="padding:1.5em;" width="100%">
+                            <thead>
+                                <tr>
+                                    <th class="center aligned">
+                                        사용자
+                                    </th>
+                                    <th class="center aligned">
+                                        태그 사용 글 수
+                                    </th>
+                                    <th class="center aligned">
+                                        짧은 글 수 (30글자 이하)
+                                    </th>
+                                    <th class="center aligned">
+                                        총 받은 보상 (MRshares)
+                                    </th>
+                                </tr>
+                            </thead>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="ui vertical footer segment">
+            <div class="ui center aligned container">
+                <div class="ui stackable inverted divided grid">
+                    <div class="eight wide column left aligned">
+                        V 0.1 (20180416_2300)
+                    </div>
+                    <div class="eight wide column right aligned">
+                        <span class="ui copyright">
+                        &copy; 2018 <a href="https://steemit.com/@lazyrodi" target="_blank">@lazyrodi</a><br />
+                        Thanks to <a href="https://steemit.com/@virus707" target="_blank">@virus707</a>
+                    </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>
