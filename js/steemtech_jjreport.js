@@ -16,6 +16,16 @@
  let $sMessageWarning = '';
  let $sMessageWarningHeader = '';
 
+ let filteredData = new Object();
+ let authors = [];
+
+ let startDate;
+ let endDate;
+
+ let MAX = 100;
+
+ let totalPostCount = 0;
+
  $(document).ready(function() {
      initPage();
 
@@ -34,43 +44,91 @@
  function loadDiscussions() {
      steem.api.getDiscussionsByCreated({
              "tag": "jjangjjangman",
-             "limit": 100
+             "limit": MAX
          },
          (err, result) => {
              if (err) {
                  console.log(err);
              } else {
-                 console.log(result);
+                 endDate = new Date(result[0].created);
 
-                 // TODO: get more discussions...
-                 // getMoreDiscussions(result[99].permlink, result[99].author);
+                 makeDataForTable(result, 0);
 
-                 setTable(getDataForTable(result));
-
+                 recursiveLoading(result[MAX - 1].permlink, result[MAX - 1].author);
              }
          });
  }
 
- function setTable(users) {
-     users[0].forEach(user => {
+ let t = 0;
+
+ function recursiveLoading(lastPermlink, lastAuthor) {
+
+     steem.api.getDiscussionsByCreated({
+         "tag": "jjangjjangman",
+         "limit": MAX,
+         "start_permlink": lastPermlink,
+         "start_author": lastAuthor
+     },
+     (err, result) => {
+         if (err) {
+             console.log(err);
+         } else {
+             makeDataForTable(result, 1);
+
+             let len = result.length - 1;
+
+             startDate = new Date(result[len].created);
+             if (isTargetDate(result[len].created, endDate, 3) && (len < 99 || t > 10)) {
+                 setStatistics();
+                 setTable();
+             } else {
+                 t++;
+                 recursiveLoading(result[len].permlink, result[len].author);
+             }
+         }
+     });
+ }
+
+ function isTargetDate(current, end, days) {
+     let target = new Date(end - (days * 24 * 60 * 60 * 1000));
+     let cur = new Date(current);
+
+     return cur < target;
+ }
+
+ function setStatistics() {
+    $("#userCount").text(authors.length);
+    $("#postCount").text(totalPostCount);
+ }
+
+ function setTable() {
+     authors.forEach(user => {
          let template =
              `<tr>
-                <td><a href="https://steemit.com/@${users[1][user].author}" target="_blank">@${users[1][user].author}</a></td>
-                <td class="right aligned">${users[1][user].count}</td>
-                <td class="right aligned">${users[1][user].short_len_count}</td>
-                <td class="right aligned">${((users[1][user].vote_rshares)/1000000).toFixed(0)}</td>
+                <td><a href="https://steemit.com/@${filteredData[user].author}" target="_blank">@${filteredData[user].author}</a></td>
+                <td class="right aligned">${filteredData[user].count}</td>
+                <td class="right aligned">${filteredData[user].short_len_count}</td>
+                <td class="right aligned">${filteredData[user].is_hangul}</td>
             </tr>`
+            // <td class="right aligned">${((filteredData[user].vote_rshares)/1000000).toFixed(0)}</td>
          $("#tag_users_table").append(template);
      });
 
+     $("#tag_users_table_title").text("#JJANGJJANGMAN 태그 사용 정보 [ " + getTimeToPrint(startDate) + " ~ " + getTimeToPrint(endDate) + " ]");
      $("#wrap_loader").removeClass('active');
  }
 
- function getDataForTable(posts) {
-     let filteredData = new Object();
-     let authors = [];
+ function getTimeToPrint(t) {
+     let ret = new Date(t.valueOf() + (18 * 60 * 60 * 1000));
+     ret = ret.toISOString().replace('T', ' ');
+     ret = ret.substr(0, ret.length - 5);
 
-     for (let i = 0; i < posts.length; i++) {
+     return ret;
+ }
+
+ function makeDataForTable(posts, start) {
+
+     for (let i = start; i < posts.length; i++) {
          if (authors.indexOf(posts[i].author) == -1) {
              authors.push(posts[i].author);
 
@@ -79,35 +137,20 @@
                  "count": 1,
                  "short_len_count": 0,
                  "vote_rshares": posts[i].vote_rshares,
-                 "reputation": posts[i].author_reputation
+                 "reputation": posts[i].author_reputation,
+                 "is_hangul": isHangul(posts[i].body)
              };
          } else {
              filteredData[posts[i].author].count++;
              filteredData[posts[i].author].posts_rshares += posts[i].vote_rshares;
          }
 
+         totalPostCount++; // for statistics
+
          if (posts[i].body.length < 30) {
              filteredData[posts[i].author].short_len_count++;
          }
      }
-     return [authors, filteredData];
- }
-
- // TODO: get more discussions...
- function getMoreDiscussions(lastPermlink, lastAuthor) {
-     steem.api.getDiscussionsByCreated({
-             "tag": "jjangjjangman",
-             "limit": 100,
-             "start_permlink": lastPermlink,
-             "start_author": lastAuthor
-         },
-         (err, result) => {
-             if (err) {
-                 console.log(err);
-             } else {
-                 return result;
-             }
-         });
  }
 
  /**
@@ -124,6 +167,14 @@
      })(navigator.userAgent || navigator.vendor || window.opera);
      return check;
  };
+
+ function isHangul(phrase) {
+     let regExp = /[ㄱ-힣]/g;
+     if (phrase.match(regExp) != null) {
+        return "O";
+     }
+     return "X";
+ }
 
  let jjList = ["@virus707", "@isaaclab", "@jungs", "@abyu",
      "@akuku", "@anne.sophie", "@apion45", "@blaire0323",

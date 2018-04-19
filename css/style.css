@@ -35,6 +35,11 @@ main {
   display: none;
 }
 
+.ui.page_title {
+  font-weight: bold;
+  font-size: 2em;
+}
+
 /* footer */
 .ui.footer.segment {
 	padding: 2em 0em;

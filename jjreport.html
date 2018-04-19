@@ -48,10 +48,36 @@
             </div>
         </div>
 
+        <div class="ui stackable container" style="padding-top: 2em;">
+            <div class="column">
+                <div class="ui orange segment">
+
+                    <div class="ui mini blue statistic">
+                        <div id="userCount" class="value">
+                           0
+                        </div>
+                        <div class="label">
+                            사용 유저
+                        </div>
+                    </div>
+
+                    <div class="ui mini blue statistic">
+                        <div id="postCount" class="value">
+                           0
+                        </div>
+                        <div class="label">
+                            사용한 글
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
         <div id="container_tag_table" class="ui container" style="padding-top: 2em;">
             <div class="column">
                 <div class="ui top attached header grey segment">
-                    <p class="ui small header">#JJANGJJANGMAN 태그 사용 정보 (최근 100개의 글)</p>
+                    <p id="tag_users_table_title" class="ui small header">#JJANGJJANGMAN 태그 사용 정보</p>
                 </div>
                 <div class="ui bottom attached stacked segment" style="padding:0px;">
                     <div class="column">
@@ -69,7 +95,7 @@
                                         짧은 글 수 (30글자 이하)
                                     </th>
                                     <th class="center aligned">
-                                        총 받은 보상 (MRshares)
+                                        한글 사용
                                     </th>
                                 </tr>
                             </thead>
@@ -86,7 +112,7 @@
             <div class="ui center aligned container">
                 <div class="ui stackable inverted divided grid">
                     <div class="eight wide column left aligned">
-                        V 0.1 (20180416_2300)
+                        V 0.1.1 (20180420_0120)
                     </div>
                     <div class="eight wide column right aligned">
                         <span class="ui copyright">
