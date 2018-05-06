@@ -270,7 +270,8 @@
                  $profileName = $metadata.profile.name + " (" + calcReputation(result.reputation) + ")";
              }
              if ($metadata.profile.profile_image != undefined) {
-                 $imgSrc = $metadata.profile.profile_image;
+                 //$imgSrc = $metadata.profile.profile_image;
+                 $imgSrc = "https://steemitimages.com/u/" + result.name + "/avatar"
              }
              if ($metadata.profile.location != undefined) {
                  $location = $metadata.profile.location;
